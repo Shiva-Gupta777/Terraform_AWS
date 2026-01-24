@@ -70,3 +70,29 @@ resource "aws_route_table_association" "public_sub" {
    route_table_id = aws_route_table.my_route.id
    subnet_id = aws_subnet.PublicSubnet.id
 }
+
+
+# 1 - 1 Instance 
+
+# EC2 in Public Subnet
+resource "aws_instance" "PublicEC2" {
+  ami                         = "ami-0c1ac872a8b1d7b7c"   # Amazon Linux 2 (eu-north-1)
+  instance_type               = "t3.micro"
+  subnet_id                   = aws_subnet.PublicSubnet.id
+  associate_public_ip_address = true
+
+  tags = {
+    Name = "Public-EC2"
+  }
+}
+
+# EC2 in Private Subnet
+resource "aws_instance" "PrivateEC2" {
+  ami           = "ami-0c1ac872a8b1d7b7c"
+  instance_type = "t3.micro"
+  subnet_id     = aws_subnet.PrivateSubnet.id
+
+  tags = {
+    Name = "Private-EC2"
+  }
+}
