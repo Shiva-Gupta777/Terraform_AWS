@@ -1,3 +1,22 @@
-variable "aws_region" {
-  type = string
+variable "ec2_instance_type" {
+  type        = string
+  default     = "t3.micro"
+  description = "The size of ec2"
+
+  // Validation block to ensure only specific instance types are allowed
+
+  validation {
+    condition     = contains(["t2.micro", "t3.micro"], var.ec2_instance_type)
+    error_message = "Only t2.micro and t3.micro are supported."
+  }
+}
+
+variable "ec2_volume_type" {
+  type        = string
+  description = "The volume type between GP2 and GP3"
+}
+
+variable "ec2_volume_size" {
+  type        = number
+  description = "The size in GB of the root block volume"
 }
