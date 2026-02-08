@@ -24,18 +24,18 @@ variable "ec2_instance_type" {
 
 # Object Function 
 
-variable "ec2_volume_config"{
-    type = object({
-      size = number  
-      type = string
-    })
+variable "ec2_volume_config" {
+  type = object({
+    size = number
+    type = string
+  })
 
-    default = {
+  default = {
     size = 10
     type = "gp3"
   }
 
-    description = "Size and type of the root block volume for EC2 instances"
+  description = "Size and type of the root block volume for EC2 instances"
 }
 
 

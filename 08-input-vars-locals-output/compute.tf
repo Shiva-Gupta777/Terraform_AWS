@@ -1,3 +1,4 @@
+
 data "aws_ami" "ubuntu" {
   most_recent = true
   owners      = ["099720109477"] # Owner is Canonical  Ubuntu AMI → always Canonical ID 099720109477.
@@ -26,12 +27,7 @@ resource "aws_instance" "compute" {
 
 
   tags = merge(
-    var.additional_tags,
-    {
-      ManagedBy = "Terraform"
-    }
-  )
-
+    local.common_tags,var.additional_tags)
 
 }
 
