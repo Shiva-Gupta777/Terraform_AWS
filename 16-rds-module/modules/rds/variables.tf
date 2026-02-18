@@ -4,6 +4,7 @@ variable "project_name" {
 
 variable "instance_class" {
   type = string
+  default = "db.t3.micro"
 
   validation {
     condition     = contains(["db.t3.micro"], var.instance_class)
@@ -14,6 +15,7 @@ variable "instance_class" {
 
 variable "storage_size" {
   type = number
+  default = 10
 
   validation {
     condition     = var.storage_size >= 5 && var.storage_size <= 10
@@ -24,6 +26,7 @@ variable "storage_size" {
 
 variable "engine" {
   type = string
+  default = "postgres_latest"
 
   validation {
     condition     = contains(["postgres_latest", "postgres14"], var.engine)
