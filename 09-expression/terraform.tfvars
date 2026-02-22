@@ -24,3 +24,10 @@ numbers_map = {
   d = 4
   e = 5
 }
+
+
+users = [
+  { username = "Jahn", role = "admin" },
+  { username = "Jahn", role = "developer" },
+  { username = "Laura", role = "auditor" }
+]

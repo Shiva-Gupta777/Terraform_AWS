@@ -13,3 +13,12 @@ variable "objects_list" {
 variable "numbers_map" {
   type = map(number)
 }
+
+// converting maps to list list inot maps 
+
+variable "users" {
+  type = list(object({
+    username = string
+    role     = string
+  }))
+}
