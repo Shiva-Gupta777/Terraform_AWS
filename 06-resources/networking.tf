@@ -8,6 +8,8 @@ resource "aws_vpc" "main" {
   }
 }
 
+// Create a public subnet in the VPC
+
 resource "aws_subnet" "public" {
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.0.0.0/24"
@@ -18,3 +20,43 @@ resource "aws_subnet" "public" {
     Name      = "06-resources-public-subnet"
   }
 }
+
+
+// Create an Internet Gateway and attach it to the VPC
+
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    ManagedBy = "Terraform"
+    Project   = "06-resources"
+    Name      = "06-resources-main-igw"
+  }
+}
+
+// Create a route table for the public subnet and add a default route to the Internet Gateway
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
+
+  tags = {
+    Name      = "06-resources-public-rt"
+    Project   = "06-resources"
+    ManagedBy = "Terraform"
+  }
+}
+
+// Associate the public subnet with the route table
+
+resource "aws_route_table_association" "public" {
+  subnet_id      = aws_subnet.public.id
+  route_table_id = aws_route_table.public.id
+}
+
+
+
