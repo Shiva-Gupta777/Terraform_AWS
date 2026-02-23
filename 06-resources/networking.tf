@@ -1,11 +1,18 @@
+locals {
+  common_tags = {
+    Project   = "06-resources"
+    ManagedBy = "Terraform"
+    CostCenter = "1234"
+
+  }
+}
+
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
 
-  tags = {
-    ManagedBy = "Terraform"
-    Project   = "06-resources"
-    Name      = "06-resources"
-  }
+  tags = merge(local.common_tags, {
+    Name = "06-resources"
+  })
 }
 
 // Create a public subnet in the VPC
@@ -14,11 +21,9 @@ resource "aws_subnet" "public" {
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.0.0.0/24"
 
-  tags = {
-    ManagedBy = "Terraform"
-    Project   = "06-resources"
-    Name      = "06-resources-public-subnet"
-  }
+  tags = merge(local.common_tags, {
+    Name = "06-resources-public-subnet"
+  })
 }
 
 
@@ -27,11 +32,9 @@ resource "aws_subnet" "public" {
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
-  tags = {
-    ManagedBy = "Terraform"
-    Project   = "06-resources"
-    Name      = "06-resources-main-igw"
-  }
+  tags = merge(local.common_tags, {
+    Name = "06-resources-internet-gateway"
+  })
 }
 
 // Create a route table for the public subnet and add a default route to the Internet Gateway
@@ -44,11 +47,9 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.main.id
   }
 
-  tags = {
-    Name      = "06-resources-public-rt"
-    Project   = "06-resources"
-    ManagedBy = "Terraform"
-  }
+  tags = merge(local.common_tags, {
+    Name = "06-resources-public-route-table"
+  })
 }
 
 // Associate the public subnet with the route table
