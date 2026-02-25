@@ -1,5 +1,6 @@
 resource "aws_instance" "ubuntu" {
-  ami                         = "ami-051a31ab2f4d498f5"
+  //nginx AMI ID
+  ami                         = "ami-07413e9580bfab8b5"
   instance_type               = "t3.micro"
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.public.id
@@ -15,9 +16,16 @@ resource "aws_instance" "ubuntu" {
 
   }
 
-   tags = merge(local.common_tags, {
+  tags = merge(local.common_tags, {
     Name = "VPC-EC2-Instance"
   })
+
+  // Ensure the instance is created before any potential replacement occurs
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
 }
 
 
@@ -28,7 +36,7 @@ resource "aws_security_group" "public_http_traffic" {
   vpc_id      = aws_vpc.main.id
 
 
-   tags = merge(local.common_tags, {
+  tags = merge(local.common_tags, {
     Name = "SECURITY-GROUP-PUBLIC-HTTP-TRAFFIC",
   })
 }
