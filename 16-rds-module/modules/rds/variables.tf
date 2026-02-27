@@ -60,11 +60,11 @@ variable "credentials" {
     condition = (
       length(regexall("[A-Za-z]+", var.credentials.password)) > 0 &&
       length(regexall("[0-9]+", var.credentials.password)) > 0 &&
-      length(regexall("[A-Za-z0-9]{6,}", var.credentials.password)) > 0
+      length(regexall("^[A-Za-z0-9]{6,}$", var.credentials.password)) > 0
     )
 
     error_message = <<EOT
-Password must:
+Password must:  
 1. Contain at least one letter
 2. Contain at least one digit
 3. Be at least six characters long

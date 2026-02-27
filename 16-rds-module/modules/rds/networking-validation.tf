@@ -42,3 +42,46 @@ EOT
 
   }
 }
+
+
+
+##############################
+# Security Group Validation
+##############################
+
+// Fetch all rules for the provided security groups
+
+data "aws_vpc_security_group_rules" "input" {
+  filter {
+    name   = "group-id"
+    values = var.security_group_ids
+  }
+}
+
+
+data "aws_vpc_security_group_rule" "example" {
+  for_each = toset(data.aws_vpc_security_group_rules.input.ids)
+  security_group_rule_id = each.value
+
+
+  lifecycle {
+  postcondition {
+    condition = (
+      self.is_egress ||
+      (
+        self.cidr_ipv4 == null &&
+        self.cidr_ipv6 == null &&
+        self.referenced_security_group_id != null
+      )
+    )
+
+    error_message = <<EOT
+The following security group contains an invalid inbound rule: ${self.security_group_id}
+
+Please ensure the following conditions are met:
+Rules must not allow inbound traffic from IP CIDR blocks, only from other security groups.
+EOT
+  }
+}
+
+}
