@@ -44,7 +44,7 @@ moved {
   to   = module.compute.aws_instance.this
 }
 
-//our instance
+//our instance 
 
 resource "aws_instance" "new_final" {
   ami           = data.aws_ami.ubuntu.id
