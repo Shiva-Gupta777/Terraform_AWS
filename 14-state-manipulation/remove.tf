@@ -4,7 +4,7 @@
 #   tags = {
 #     ManagedBy = "Terraform"
 #   }
-  
+
 # }
 
 removed {

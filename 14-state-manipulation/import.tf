@@ -5,7 +5,7 @@ resource "aws_s3_bucket" "remote_state" {
   tags = {
     ManagedBy = "Terraform"
   }
-  
+
 }
 // Now we have the bucket in our state, we can import the public access block resource
 
